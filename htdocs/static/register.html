@@ -1,0 +1,207 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirTickets - Регистрация</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .register-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #f0f7ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .register-btn {
+            background-color: #f97316;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .register-btn:hover {
+            background-color: #ea580c;
+        }
+        .login-link {
+            color: #1e40af;
+            font-weight: 500;
+        }
+        .login-link:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-blue-50">
+    <header class="bg-blue-600 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-white">AirTickets</div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="/static/Design3.1.html" class="text-blue-200 hover:text-white">Авиабилеты</a></li>
+                    <li><a href="#" class="text-blue-200 hover:text-white">Отели</a></li>
+                    <li><a href="#" class="text-blue-200 hover:text-white">Помощь</a></li>
+                </ul>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <a href="/static/login.html" class="px-4 py-2 text-white font-medium border border-white rounded-md hover:bg-blue-700">Войти</a>
+            </div>
+        </div>
+    </header>
+    <main class="container mx-auto px-4 py-8">
+        <div class="register-container">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">Регистрация</h1>
+            <form id="registerForm">
+                <div class="mb-4">
+                    <label class="block text-blue-700 mb-2" for="first_name">Имя</label>
+                    <input type="text" id="first_name" name="first_name" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Введите ваше имя" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-blue-700 mb-2" for="last_name">Фамилия</label>
+                    <input type="text" id="last_name" name="last_name" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Введите вашу фамилию" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-blue-700 mb-2" for="email">Email</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Введите ваш email" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-blue-700 mb-2" for="password">Пароль</label>
+                    <input type="password" id="password" name="password" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Придумайте пароль" required>
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" class="register-btn">Зарегистрироваться</button>
+                </div>
+                <p id="errorMessage" class="error-message text-center">Произошла ошибка при регистрации.</p>
+                <p class="text-center mt-4">Уже есть аккаунт? <a href="/static/login.html" class="login-link">Войдите</a></p>
+            </form>
+        </div>
+    </main>
+    <footer class="bg-blue-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-4">AirTickets</h3>
+                    <p class="text-blue-200">Лучший способ путешествовать</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h4 class="font-medium mb-3">Компания</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-blue-200 hover:text-white">О нас</a></li>
+                            <li><a href="#" class="text-blue-200 hover:text-white">Контакты</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-3">Помощь</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-blue-200 hover:text-white">FAQ</a></li>
+                            <li><a href="#" class="text-blue-200 hover:text-white">Правила</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-3">Контакты</h4>
+                        <ul class="space-y-2">
+                            <li class="text-blue-200">+7 (777) 123-45-67</li>
+                            <li class="text-blue-200">
+                                <a href="/cdn-cgi/l/email-protection#b891939696899492b8939b90869b929a949a8b8cd19c9092">[email protected]</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-blue-700 mt-8 pt-6 text-center text-blue-300">
+                <p>© 2025 AirTickets. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            const errorMessage = document.getElementById('errorMessage');
+
+            registerForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const firstName = document.getElementById('first_name').value;
+                const lastName = document.getElementById('last_name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                const formData = new URLSearchParams();
+                formData.append('first_name', firstName);
+                formData.append('last_name', lastName);
+                formData.append('email', email);
+                formData.append('password', password);
+
+                try {
+                    const response = await fetch('/cgi-bin/register.py', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formData
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        window.location.href = '/static/login.html';
+                    } else {
+                        errorMessage.textContent = data.error || 'Произошла ошибка при регистрации.';
+                        errorMessage.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                    errorMessage.textContent = 'Произошла ошибка. Попробуйте снова.';
+                    errorMessage.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

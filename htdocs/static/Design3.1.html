@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirTickets - Поиск авиабилетов</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #passengerDropdown { transition: all 0.3s ease; }
+        .flight-card { transition: transform 0.2s ease; }
+        .flight-card:hover { transform: translateY(-2px); }
+        @media (max-width: 768px) {
+            .search-form { flex-direction: column; }
+            .search-form input, .search-form select { width: 100%; }
+        }
+        .flight-card-container {
+            display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid #bfdbfe; border-radius: 0.5rem; background-color: #f0f7ff; margin-bottom: 1rem;
+        }
+        .flight-card-container:hover { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .flight-info { display: flex; align-items: center; gap: 1.5rem; }
+        .flight-logo img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: #dbeafe;
+            object-fit: contain;
+        }
+        .flight-logo img[src=""] {
+            display: none;
+        }
+        .flight-times { display: flex; align-items: center; gap: 1rem; }
+        .flight-duration { text-align: center; font-size: 0.75rem; color: #4b5e7e; }
+        .select-button {
+            background-color: #f97316;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .select-button:hover { background-color: #ea580c; }
+        .price-discount { display: flex; flex-direction: column; align-items: flex-end; }
+        .price { font-size: 1.25rem; font-weight: bold; color: #1e40af; }
+        .original-price { font-size: 0.875rem; color: #ef4444; text-decoration: line-through; }
+        #purchaseForm { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #f0f7ff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; }
+        #purchaseForm.show { display: block; }
+        .close-btn { position: absolute; top: 0.5rem; right: 0.5rem; cursor: pointer; }
+        .passenger-class-container { display: flex; gap: 1rem; align-items: center; }
+        .passenger-class-container select { 
+            padding: 0.75rem; 
+            background-color: #dbeafe; 
+            border-radius: 0.375rem; 
+            border: none; 
+            color: #1e40af;
+            font-weight: 500;
+        }
+        .passenger-dropdown-btn {
+            padding: 0.75rem;
+            background-color: #dbeafe;
+            border-radius: 0.375rem;
+            border: none;
+            color: #1e40af;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .passenger-dropdown-btn:hover {
+            background-color: #bfdbfe;
+        }
+        .search-btn {
+            background-color: #f97316;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .search-btn:hover {
+            background-color: #ea580c;
+        }
+        .autocomplete-list {
+            position: absolute;
+            border: 1px solid #bfdbfe;
+            border-top: none;
+            background-color: white;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            border-radius: 0 0 0.375rem 0.375rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .autocomplete-list div {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+        .autocomplete-list div:hover {
+            background-color: #bfdbfe;
+        }
+        .logout-btn {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .logout-btn:hover {
+            background-color: #dc2626;
+        }
+    </style>
+</head>
+<body class="bg-blue-50">
+    <header class="bg-blue-600 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-white">AirTickets</div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="text-white font-medium">Авиабилеты</a></li>
+                    <li><a href="#" class="text-blue-200 hover:text-white">Отели</a></li>
+                    <li><a href="#" class="text-blue-200 hover:text-white">Помощь</a></li>
+                </ul>
+            </nav>
+            <div id="authSection" class="flex items-center space-x-4">
+                <!-- Динамически обновляется через JavaScript -->
+            </div>
+        </div>
+    </header>
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-blue-200">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Поиск авиабилетов</h1>
+            <form id="flightSearchForm" class="search-form">
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <div class="flex-1 relative">
+                        <label class="block text-blue-700 mb-2">Откуда</label>
+                        <input type="text" id="departure" name="departure" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Город или аэропорт" autocomplete="off">
+                        <div id="departureSuggestions" class="autocomplete-list hidden"></div>
+                    </div>
+                    <div class="flex-1 relative">
+                        <label class="block text-blue-700 mb-2">Куда</label>
+                        <input type="text" id="destination" name="destination" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Город или аэропорт" autocomplete="off">
+                        <div id="destinationSuggestions" class="autocomplete-list hidden"></div>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-blue-700 mb-2">Туда</label>
+                        <input type="date" id="departureDate" name="departure_date" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-blue-700 mb-2">Обратно (необязательно)</label>
+                        <input type="date" id="returnDate" name="return_date" class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="passenger-class-container">
+                        <div class="relative">
+                            <button type="button" id="passengerDropdownBtn" class="passenger-dropdown-btn">
+                                <span id="passengerCount">1 пассажир</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div id="passengerDropdown" class="hidden absolute z-10 mt-2 w-64 bg-white rounded-md shadow-lg p-4 border border-blue-200">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-blue-700">Взрослые</span>
+                                    <div class="flex items-center space-x-3">
+                                        <button type="button" class="passenger-minus w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center hover:bg-blue-300">-</button>
+                                        <span class="adult-count text-blue-800">1</span>
+                                        <button type="button" class="passenger-plus w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center hover:bg-blue-300">+</button>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-blue-700">Дети (2-11 лет)</span>
+                                    <div class="flex items-center space-x-3">
+                                        <button type="button" class="passenger-minus w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center hover:bg-blue-300">-</button>
+                                        <span class="child-count text-blue-800">0</span>
+                                        <button type="button" class="passenger-plus w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center hover:bg-blue-300">+</button>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-blue-700">Младенцы (до 2 лет)</span>
+                                    <div class="flex items-center space-x-3">
+                                        <button type="button" class="passenger-minus w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center hover:bg-blue-300">-</button>
+                                        <span class="infant-count text-blue-800">0</span>
+                                        <button type="button" class="passenger-plus w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center hover:bg-blue-300">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="passengersInput" name="passengers" value="1">
+                        </div>
+                        <select name="class" class="px-4 py-3">
+                            <option value="economy">Эконом</option>
+                            <option value="business">Бизнес</option>
+                            <option value="first">Первый</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="searchBtn" class="search-btn">Найти билеты</button>
+                </div>
+            </form>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="w-full md:w-1/4 bg-white rounded-xl shadow-md p-6 h-fit border border-blue-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-900">Фильтры</h2>
+                <div class="mb-6">
+                    <h3 class="font-medium mb-2 text-gray-900">Цена</h3>
+                    <input type="range" id="priceRange" min="0" max="100000" step="1000" value="50000" class="w-full mb-2 accent-blue-500">
+                    <div class="flex justify-between text-blue-600">
+                        <span>0 ₸</span>
+                        <span id="priceValue">50 000 ₸</span>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h3 class="font-medium mb-2 text-gray-900">Авиакомпании</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center text-gray-700">
+                            <input type="checkbox" class="mr-2 accent-blue-500" checked> Air Astana
+                        </label>
+                        <label class="flex items-center text-gray-700">
+                            <input type="checkbox" class="mr-2 accent-blue-500" checked> FlyArystan
+                        </label>
+                        <label class="flex items-center text-gray-700">
+                            <input type="checkbox" class="mr-2 accent-blue-500" checked> SCAT
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h3 class="font-medium mb-2 text-gray-900">Пересадки</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center text-gray-700">
+                            <input type="radio" name="transfers" class="mr-2 accent-blue-500" checked> Любые
+                        </label>
+                        <label class="flex items-center text-gray-700">
+                            <input type="radio" name="transfers" class="mr-2 accent-blue-500"> Без пересадок
+                        </label>
+                        <label class="flex items-center text-gray-700">
+                            <input type="radio" name="transfers" class="mr-2 accent-blue-500"> Не более 1 пересадки
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-3/4" id="searchResults">
+                <div class="bg-white rounded-xl shadow-md p-6 border border-blue-200">
+                    <div class="text-center py-12">
+                        <i class="fas fa-plane text-4xl text-blue-300 mb-4"></i>
+                        <p class="text-blue-500">Укажите параметры поиска, чтобы найти подходящие рейсы</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-blue-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-4">AirTickets</h3>
+                    <p class="text-blue-200">Лучший способ путешествовать</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h4 class="font-medium mb-3">Компания</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-blue-200 hover:text-white">О нас</a></li>
+                            <li><a href="#" class="text-blue-200 hover:text-white">Контакты</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-3">Помощь</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-blue-200 hover:text-white">FAQ</a></li>
+                            <li><a href="#" class="text-blue-200 hover:text-white">Правила</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-3">Контакты</h4>
+                        <ul class="space-y-2">
+                            <li class="text-blue-200">+7 (777) 123-45-67</li>
+                            <li class="text-blue-200">
+                                <a href="/cdn-cgi/l/email-protection#b891939696899492b8939b90869b929a949a8b8cd19c9092">[email protected]</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-blue-700 mt-8 pt-6 text-center text-blue-300">
+                <p>© 2025 AirTickets. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        // Глобальная функция
+        function showPurchaseForm(flightId, passengers, price) {
+            console.log('Opening purchase form for flight ID:', flightId);
+            const formHtml = `
+                <div id="purchaseForm" class="show">
+                    <span class="close-btn" onclick="document.getElementById('purchaseForm').classList.remove('show')">×</span>
+                    <h2 class="text-xl font-bold mb-4 text-blue-800">Оформление покупки</h2>
+                    <form id="purchaseFormData">
+                        <div class="mb-4">
+                            <label class="block text-blue-700 mb-2">Имя</label>
+                            <input type="text" name="first_name" class="w-full p-2 border border-blue-300 rounded-md" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-blue-700 mb-2">Фамилия</label>
+                            <input type="text" name="last_name" class="w-full p-2 border border-blue-300 rounded-md" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-blue-700 mb-2">Email</label>
+                            <input type="email" name="email" class="w-full p-2 border border-blue-300 rounded-md" required>
+                        </div>
+                        <input type="hidden" name="flight_id" value="${flightId}">
+                        <input type="hidden" name="passengers" value="${passengers}">
+                        <input type="hidden" name="price" value="${price}">
+                        <button type="submit" class="px-4 py-2 bg-orange-500 text-gray-900 rounded-md hover:bg-orange-600">Купить</button>
+                    </form>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', formHtml);
+
+            document.getElementById('purchaseFormData').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                console.log('Purchase form submitted');
+                const formData = new FormData(this);
+                let userId = null;
+                try {
+                    const sessionResponse = await fetch('/cgi-bin/check_session.py');
+                    const sessionData = await sessionResponse.json();
+                    userId = sessionData.user_id || null;
+                    console.log('Session user ID:', userId);
+                } catch (error) {
+                    console.error('Error checking session:', error);
+                }
+                formData.append('user_id', userId);
+
+                try {
+                    const bookResponse = await fetch('/cgi-bin/book_flight.py', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const bookData = await bookResponse.json();
+                    console.log('Booking response:', bookData);
+                    if (bookData.success) {
+                        console.log('Redirecting to generate ticket for booking ID:', bookData.booking_id);
+                        window.location.href = `/cgi-bin/generate_ticket.py?booking_id=${bookData.booking_id}`;
+                        document.getElementById('purchaseForm').classList.remove('show');
+                    } else {
+                        alert('Ошибка при бронировании: ' + bookData.error);
+                    }
+                } catch (error) {
+                    console.error('Error during purchase:', error);
+                    alert('Произошла ошибка при покупке: ' + error.message);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Проверка авторизации и отображение имени пользователя
+            async function checkAuth() {
+                const authSection = document.getElementById('authSection');
+                try {
+                    const response = await fetch('/cgi-bin/check_session.py');
+                    const data = await response.json();
+                    if (data.user_id) {
+                        // Пользователь авторизован, делаем запрос для получения имени
+                        const userResponse = await fetch(`/cgi-bin/get_user.py?user_id=${data.user_id}`);
+                        const userData = await userResponse.json();
+                        if (userData.success) {
+                            authSection.innerHTML = `
+                                <span class="text-white font-medium">Привет, ${userData.first_name}!</span>
+                                <button id="logoutBtn" class="logout-btn">Выйти</button>
+                            `;
+                            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                                await fetch('/cgi-bin/logout.py', { method: 'POST' });
+                                window.location.reload();
+                            });
+                        } else {
+                            throw new Error('Не удалось загрузить данные пользователя');
+                        }
+                    } else {
+                        authSection.innerHTML = `
+                            <button id="loginBtn" class="px-4 py-2 text-white font-medium border border-white rounded-md hover:bg-blue-700">Войти</button>
+                            <button id="registerBtn" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">Регистрация</button>
+                        `;
+                        document.getElementById('loginBtn').addEventListener('click', () => window.location.href = '/static/login.html');
+                        document.getElementById('registerBtn').addEventListener('click', () => window.location.href = '/static/register.html');
+                    }
+                } catch (error) {
+                    console.error('Error checking auth:', error);
+                    authSection.innerHTML = `
+                        <button id="loginBtn" class="px-4 py-2 text-white font-medium border border-white rounded-md hover:bg-blue-700">Войти</button>
+                        <button id="registerBtn" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">Регистрация</button>
+                    `;
+                    document.getElementById('loginBtn').addEventListener('click', () => window.location.href = '/static/login.html');
+                    document.getElementById('registerBtn').addEventListener('click', () => window.location.href = '/static/register.html');
+                }
+            }
+
+            await checkAuth();
+
+            const passengerDropdownBtn = document.getElementById('passengerDropdownBtn');
+            const passengerDropdown = document.getElementById('passengerDropdown');
+            const passengerCount = document.getElementById('passengerCount');
+            const passengersInput = document.getElementById('passengersInput');
+            const flightSearchForm = document.getElementById('flightSearchForm');
+            let adults = 1, children = 0, infants = 0;
+
+            passengerDropdownBtn.addEventListener('click', () => {
+                console.log('Passenger dropdown toggled');
+                passengerDropdown.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('.passenger-plus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.closest('div').querySelector('span').className.split(' ')[0];
+                    if (type === 'adult-count') adults++;
+                    if (type === 'child-count') children++;
+                    if (type === 'infant-count') infants++;
+                    updatePassengerCount();
+                });
+            });
+
+            document.querySelectorAll('.passenger-minus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.closest('div').querySelector('span').className.split(' ')[0];
+                    if (type === 'adult-count' && adults > 1) adults--;
+                    if (type === 'child-count' && children > 0) children--;
+                    if (type === 'infant-count' && infants > 0) infants--;
+                    updatePassengerCount();
+                });
+            });
+
+            function updatePassengerCount() {
+                document.querySelector('.adult-count').textContent = adults;
+                document.querySelector('.child-count').textContent = children;
+                document.querySelector('.infant-count').textContent = infants;
+                const total = adults + children + infants;
+                passengerCount.textContent = `${total} ${getPassengerWord(total)}`;
+                passengersInput.value = total;
+            }
+
+            function getPassengerWord(count) {
+                if (count % 10 === 1 && count % 100 !== 11) return 'пассажир';
+                if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return 'пассажира';
+                return 'пассажиров';
+            }
+
+            const priceRange = document.getElementById('priceRange');
+            const priceValue = document.getElementById('priceValue');
+            priceRange.addEventListener('input', () => priceValue.textContent = `${priceRange.value.replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₸`);
+
+            flightSearchForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const departure = document.getElementById('departure').value;
+                const destination = document.getElementById('destination').value;
+                const departureDate = document.getElementById('departureDate').value;
+                const returnDate = document.getElementById('returnDate').value;
+                const passengers = document.getElementById('passengersInput').value;
+                const travelClass = document.querySelector('select[name="class"]').value;
+
+                if (!departure || !destination || !departureDate) {
+                    alert('Пожалуйста, заполните все обязательные поля');
+                    return;
+                }
+
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = `<div class="bg-white rounded-xl shadow-md p-6 border border-blue-200"><div class="flex justify-center py-8"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div></div></div>`;
+
+                const formData = new URLSearchParams();
+                formData.append('departure', departure);
+                formData.append('destination', destination);
+                formData.append('departure_date', departureDate);
+                formData.append('return_date', returnDate);
+                formData.append('passengers', passengers);
+                formData.append('class', travelClass);
+
+                let userId = null;
+                try {
+                    const sessionResponse = await fetch('/cgi-bin/check_session.py');
+                    const sessionData = await sessionResponse.json();
+                    userId = sessionData.user_id || null;
+                } catch (error) {
+                    console.error('Error checking session:', error);
+                }
+                formData.append('user_id', userId);
+
+                try {
+                    const saveResponse = await fetch('/cgi-bin/save_search_request.py', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: formData
+                    });
+                    const saveData = await saveResponse.json();
+                    if (!saveData.success) {
+                        console.error('Error saving search request:', saveData.error);
+                    }
+                } catch (error) {
+                    console.error('Error saving search request:', error);
+                }
+
+                try {
+                    const searchResponse = await fetch('/cgi-bin/search_flights.py', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: formData
+                    });
+                    if (!searchResponse.ok) {
+                        throw new Error(`HTTP error! Status: ${searchResponse.status}`);
+                    }
+                    const text = await searchResponse.text();
+                    const data = JSON.parse(text);
+                    if (data.success) {
+                        displayFlights(data.flights);
+                    } else {
+                        searchResults.innerHTML = `<div class="bg-white rounded-xl shadow-md p-6 border border-blue-200"><div class="text-center py-12"><i class="fas fa-exclamation-triangle text-4xl text-blue-300 mb-4"></i><p class="text-blue-500">${data.errors.join('<br>')}</p></div></div>`;
+                    }
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    searchResults.innerHTML = `<div class="bg-white rounded-xl shadow-md p-6 border border-blue-200"><div class="text-center py-12"><i class="fas fa-exclamation-triangle text-4xl text-blue-300 mb-4"></i><p class="text-blue-500">Произошла ошибка при поиске рейсов: ${error.message}. Пожалуйста, попробуйте позже.</p></div></div>`;
+                }
+            });
+
+            function getFullAirlineName(code) {
+                const airlineMap = {
+                    'DP': 'Pobeda', 'FV': 'Rossiya', 'SU': 'Aeroflot', 'UT': 'UTair', 'S7': 'S7 Airlines',
+                    'KK': 'AtlasGlobal', 'VF': 'Valuair', 'U6': 'Ural Airlines', 'KC': 'Air Astana',
+                    'DV': 'SCAT Airlines', '5N': 'Nordavia', 'B2': 'Belavia', 'HY': 'Uzbekistan Airways',
+                    'TK': 'Turkish Airlines', 'EK': 'Emirates', 'QR': 'Qatar Airways', 'LH': 'Lufthansa',
+                    'BA': 'British Airways', 'AF': 'Air France', 'KL': 'KLM', 'AZ': 'Alitalia',
+                    'FZ': 'FlyDubai', 'G9': 'Air Arabia', 'EY': 'Etihad Airways', 'MS': 'EgyptAir',
+                    'F4': 'FlyArystan'
+                };
+                return airlineMap[code] || code;
+            }
+
+            function displayFlights(flights) {
+                const searchResults = document.getElementById('searchResults');
+                if (flights.length === 0) {
+                    searchResults.innerHTML = `<div class="bg-white rounded-xl shadow-md p-6 border border-blue-200"><div class="text-center py-12"><i class="fas fa-plane text-4xl text-blue-300 mb-4"></i><p class="text-blue-500">Рейсы не найдены.</p></div></div>`;
+                    return;
+                }
+                let html = `<div class="bg-white rounded-xl shadow-md p-6 border border-blue-200"><h3 class="text-lg font-semibold text-blue-600 mb-4">Найдено ${flights.length} рейсов</h3>`;
+                flights.forEach(flight => {
+                    const fullAirlineName = getFullAirlineName(flight.airline);
+                    const isSimilar = flight.actual_destination !== flight.destination;
+                    const airlineLogo = fullAirlineName.toLowerCase().replace(/\s+/g, '');
+                    const currencySymbol = flight.currency === 'RUB' ? '₽' : flight.currency === 'KZT' ? '₸' : flight.currency;
+                    html += `
+                        <div class="flight-card-container flight-card">
+                            <div class="flight-info">
+                                <div class="flight-logo">
+                                    <img src="/img/${airlineLogo}.png" alt="${fullAirlineName} logo" onerror="this.style.display='none'">
+                                </div>
+                                <div>
+                                    <p class="font-medium text-blue-800">${fullAirlineName}</p>
+                                    <div class="flight-times">
+                                        <div>
+                                            <p class="text-lg font-bold text-blue-900">${flight.departure_time}</p>
+                                            <p class="text-sm text-blue-600">${flight.departure}</p>
+                                        </div>
+                                        <div class="flight-duration">
+                                            <span>${flight.duration}</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-lg font-bold text-blue-900">${flight.arrival_time}</p>
+                                            <p class="text-sm text-blue-600">${flight.destination} (${flight.actual_destination})</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-blue-500 mt-1">${flight.transfers}</p>
+                                    ${flight.transfer_details ? `<p class="text-sm text-blue-500 mt-1">${flight.transfer_details}</p>` : ''}
+                                    ${isSimilar ? '<p class="text-sm text-yellow-600">Похожий рейс</p>' : ''}
+                                    <p class="text-sm text-blue-500">${flight.class === 'economy' ? 'Эконом' : flight.class === 'business' ? 'Бизнес' : 'Первый'} класс</p>
+                                </div>
+                            </div>
+                            <div class="price-discount">
+                                <p class="price">${flight.price.toLocaleString()} ${currencySymbol}</p>
+                                ${flight.discount ? `<p class="original-price">Рейс без скидки ${Math.round(flight.price / (1 - flight.discount / 100)).toLocaleString()} ${currencySymbol}</p>` : ''}
+                                <button onclick="showPurchaseForm(${flight.id}, ${passengersInput.value}, ${flight.price})" class="select-button">Выбрать за ${flight.price.toLocaleString()} ${currencySymbol}</button>
+                            </div>
+                        </div>`;
+                });
+                html += `</div>`;
+                searchResults.innerHTML = html;
+            }
+
+            function selectFlight(flightId, passengers, price) {
+                console.log('Flight selected:', { flightId, passengers, price });
+            }
+
+            // Автозаполнение городов
+            const cities = [
+                // Казахстан
+                "Алматы", "Астана", "Атырау", "Актау", "Шымкент", "Актобе", "Караганда", "Павлодар", "Усть-Каменогорск", "Кызылорда", "Семей", "Костанай", "Тараз", "Уральск", "Петропавловск",
+                // Россия
+                "Москва", "Санкт-Петербург", "Екатеринбург", "Новосибирск", "Краснодар", "Уфа", "Казань", "Сочи", "Владивосток", "Ростов-на-Дону",
+                // США
+                "Нью-Йорк", "Лос-Анджелес", "Чикаго", "Хьюстон", "Феникс", "Даллас", "Денвер", "Сан-Франциско", "Сиэтл", "Майами",
+                // Европа
+                "Лондон", "Париж", "Берлин", "Рим", "Амстердам", "Барселона", "Милан", "Мюнхен", "Вена", "Стамбул"
+            ];
+
+            function filterSuggestions(inputId, suggestionId) {
+                const input = document.getElementById(inputId);
+                const suggestions = document.getElementById(suggestionId);
+                input.addEventListener('input', () => {
+                    const value = input.value.toLowerCase();
+                    suggestions.innerHTML = '';
+                    if (value) {
+                        const filtered = cities.filter(city => city.toLowerCase().includes(value));
+                        if (filtered.length > 0) {
+                            filtered.forEach(city => {
+                                const div = document.createElement('div');
+                                div.textContent = city;
+                                div.addEventListener('click', () => {
+                                    input.value = city;
+                                    suggestions.classList.add('hidden');
+                                });
+                                suggestions.appendChild(div);
+                            });
+                            suggestions.classList.remove('hidden');
+                        } else {
+                            suggestions.classList.add('hidden');
+                        }
+                    } else {
+                        suggestions.classList.add('hidden');
+                    }
+                });
+                document.addEventListener('click', (e) => {
+                    if (!input.contains(e.target) && !suggestions.contains(e.target)) {
+                        suggestions.classList.add('hidden');
+                    }
+                });
+            }
+
+            filterSuggestions('departure', 'departureSuggestions');
+            filterSuggestions('destination', 'destinationSuggestions');
+        });
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'939a795bc8cc1d6c',t:'MTc0NjIxOTg5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'939d9d1ecc68b0bb',t:'MTc0NjI1MjgyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

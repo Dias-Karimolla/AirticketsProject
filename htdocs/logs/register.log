@@ -1,0 +1,42 @@
+2025-05-03 12:45:24,097 - DEBUG - Начало выполнения register.py
+2025-05-03 12:45:24,097 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:45:24,097 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:45:25,284 - DEBUG - Начало выполнения register.py
+2025-05-03 12:45:25,284 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:45:25,284 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:45:30,073 - DEBUG - Начало выполнения register.py
+2025-05-03 12:45:30,073 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:45:30,073 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:45:31,039 - DEBUG - Начало выполнения register.py
+2025-05-03 12:45:31,039 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:45:31,039 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:45:49,043 - DEBUG - Начало выполнения register.py
+2025-05-03 12:45:49,043 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:45:49,043 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:46:09,239 - DEBUG - Начало выполнения register.py
+2025-05-03 12:46:09,239 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:46:09,239 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:46:09,789 - DEBUG - Начало выполнения register.py
+2025-05-03 12:46:09,789 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:46:09,789 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:46:10,081 - DEBUG - Начало выполнения register.py
+2025-05-03 12:46:10,085 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:46:10,085 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:46:10,283 - DEBUG - Начало выполнения register.py
+2025-05-03 12:46:10,287 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:46:10,287 - DEBUG - Выполнение register.py завершено
+2025-05-03 12:47:28,753 - DEBUG - Начало выполнения register.py
+2025-05-03 12:47:28,753 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 12:47:28,753 - DEBUG - Выполнение register.py завершено
+2025-05-03 13:06:27,461 - DEBUG - Начало выполнения register.py
+2025-05-03 13:06:27,465 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 13:06:27,465 - DEBUG - Выполнение register.py завершено
+2025-05-03 13:06:28,088 - DEBUG - Начало выполнения register.py
+2025-05-03 13:06:28,088 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 13:06:28,088 - DEBUG - Выполнение register.py завершено
+2025-05-03 13:12:53,551 - DEBUG - Начало выполнения register.py
+2025-05-03 13:12:53,551 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 13:12:53,551 - DEBUG - Выполнение register.py завершено
+2025-05-03 13:23:31,462 - DEBUG - Начало выполнения register.py
+2025-05-03 13:23:31,462 - ERROR - Исключение в register.py: name 'os' is not defined
+2025-05-03 13:23:31,462 - DEBUG - Выполнение register.py завершено

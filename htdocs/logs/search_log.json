@@ -1,0 +1,245 @@
+[
+  {
+    "timestamp": "2025-04-21T15:38:57.923005",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T15:47:59.692286",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T15:48:09.978331",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-11",
+    "return_date": "2025-04-26",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T16:42:55.684663",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-11",
+    "return_date": "2025-04-26",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T16:43:07.137613",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:05:43.895246",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-11",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:05:51.015234",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-11",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:05:59.958584",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "??",
+    "departure_date": "2025-04-11",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:13:59.287032",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:17:26.640368",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:03.767806",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:09.481769",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u0430\u0440\u043f",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:13.773050",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u0430\u0440\u043f",
+    "departure_date": "2025-05-02",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:17.273860",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u0430\u0440\u043f",
+    "departure_date": "2025-05-02",
+    "return_date": "2025-05-05",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:23.294878",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u0430\u0440\u043f",
+    "departure_date": "2025-05-30",
+    "return_date": "2025-05-05",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:35.256280",
+    "departure": "\u043f\u043d\u0430",
+    "destination": "\u0422\u0431\u0438\u0430\u0440\u043f",
+    "departure_date": "2025-05-30",
+    "return_date": "2025-05-05",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:39.121594",
+    "departure": "\u043f\u043d\u0430",
+    "destination": "\u0422\u0431\u0438\u0430\u0440\u043f",
+    "departure_date": "2025-05-30",
+    "return_date": "2025-05-05",
+    "passengers": "3",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:18:59.034608",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-05",
+    "return_date": "2025-04-18",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:20:03.756924",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-03",
+    "return_date": "2025-04-18",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:20:07.312144",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-03",
+    "return_date": "2025-04-18",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:20:15.394488",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-21T17:20:55.435720",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-25T15:36:38.137755",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-03",
+    "return_date": "2025-04-12",
+    "passengers": "1",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-25T15:36:41.640845",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-04-03",
+    "return_date": "2025-04-12",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-25T15:36:49.047410",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-25T15:36:57.372299",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u04384",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  },
+  {
+    "timestamp": "2025-04-25T16:05:36.556331",
+    "departure": "\u0410\u043b\u043c\u0430\u0442\u044b",
+    "destination": "\u0422\u0431\u0438\u043b\u0438\u0441\u0438",
+    "departure_date": "2025-05-01",
+    "return_date": "2025-05-05",
+    "passengers": "2",
+    "class": "economy"
+  }
+]

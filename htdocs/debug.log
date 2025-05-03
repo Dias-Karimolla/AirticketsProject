@@ -1,0 +1,1 @@
+Debug: Available columns: ['id', 'user_id', 'flight_id', 'passengers', 'price', 'booking_date', 'status']

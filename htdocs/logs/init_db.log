@@ -1,0 +1,15 @@
+2025-05-03 12:36:03,890 - DEBUG - Инициализация базы данных: C:\Apache24\htdocs\logs\flight_search.db
+2025-05-03 12:36:03,896 - DEBUG - Таблицы в базе данных: [('users',), ('sqlite_sequence',), ('flights',), ('search_requests',), ('bookings',), ('passengers',), ('baggage',), ('reviews',), ('promo_codes',), ('promo_code_usage',), ('airports',), ('transfers',), ('onboard_services',), ('booked_services',), ('notifications',)]
+2025-05-03 12:36:03,896 - INFO - База данных успешно инициализирована
+2025-05-03 12:37:14,982 - DEBUG - Инициализация базы данных: C:\Apache24\htdocs\logs\flight_search.db
+2025-05-03 12:37:14,991 - DEBUG - Таблицы в базе данных: [('users',), ('sqlite_sequence',), ('flights',), ('search_requests',), ('bookings',), ('passengers',), ('baggage',), ('reviews',), ('promo_codes',), ('promo_code_usage',), ('airports',), ('transfers',), ('onboard_services',), ('booked_services',), ('notifications',)]
+2025-05-03 12:37:14,992 - INFO - База данных успешно инициализирована
+2025-05-03 12:38:19,974 - DEBUG - Инициализация базы данных: C:\Apache24\htdocs\logs\flight_search.db
+2025-05-03 12:38:19,983 - DEBUG - Таблицы в базе данных: [('users',), ('sqlite_sequence',), ('flights',), ('search_requests',), ('bookings',), ('passengers',), ('baggage',), ('reviews',), ('promo_codes',), ('promo_code_usage',), ('airports',), ('transfers',), ('onboard_services',), ('booked_services',), ('notifications',)]
+2025-05-03 12:38:19,983 - INFO - База данных успешно инициализирована
+2025-05-03 12:39:14,501 - DEBUG - Инициализация базы данных: C:\Apache24\htdocs\logs\flight_search.db
+2025-05-03 12:39:14,508 - DEBUG - Таблицы в базе данных: [('users',), ('sqlite_sequence',), ('flights',), ('search_requests',), ('bookings',), ('passengers',), ('baggage',), ('reviews',), ('promo_codes',), ('promo_code_usage',), ('airports',), ('transfers',), ('onboard_services',), ('booked_services',), ('notifications',), ('users2',)]
+2025-05-03 12:39:14,508 - INFO - База данных успешно инициализирована
+2025-05-03 12:44:56,228 - DEBUG - Инициализация базы данных: C:\Apache24\htdocs\logs\flight_search.db
+2025-05-03 12:44:56,228 - DEBUG - Таблицы в базе данных: [('users',), ('sqlite_sequence',), ('flights',), ('search_requests',), ('bookings',), ('passengers',), ('baggage',), ('reviews',), ('promo_codes',), ('promo_code_usage',), ('airports',), ('transfers',), ('onboard_services',), ('booked_services',), ('notifications',), ('users2',)]
+2025-05-03 12:44:56,228 - INFO - База данных успешно инициализирована

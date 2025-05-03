@@ -1,0 +1,73 @@
+
+\documentclass[a4paper]{article}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{fancyhdr}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{array}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{fontspec}
+\setmainfont{Noto Serif}
+
+\definecolor{headercolor}{RGB}{0, 102, 204}
+\definecolor{tableheader}{RGB}{230, 240, 255}
+\definecolor{tablerow}{RGB}{245, 245, 245}
+
+\fancyhead[C]{\textcolor{headercolor}{\Huge\textbf{Airline Logo}} \\ \large Транспортная компания}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+
+\begin{center}
+  \textcolor{headercolor}{\Huge\textbf{Авиабилет}} \\
+  \vspace{0.5cm}
+  \large Номер билета: \textbf{\texttt{17}}
+\end{center}
+
+\begin{tabular}{|>{\columncolor{tableheader}}p{3cm}|p{10cm}|}
+  \hline
+  \rowcolor{tableheader} \textbf{Поле} & \textbf{Значение} \\
+  \hline
+  \rowcolor{tablerow} Имя & dias \\
+  \hline
+  \rowcolor{tablerow} Фамилия & karim \\
+  \hline
+  \rowcolor{tablerow} Email & \texttt{kkarimolla98@bk.ru} \\
+  \hline
+  \rowcolor{tablerow} Авиакомпания & \textbf{DP} \\
+  \hline
+  \rowcolor{tablerow} Откуда & \textbf{Москва} \\
+  \hline
+  \rowcolor{tablerow} Куда & \textbf{Алматы} \\
+  \hline
+  \rowcolor{tablerow} Время вылета & 09:00 \\
+  \hline
+  \rowcolor{tablerow} Время прибытия & 14:15 \\
+  \hline
+  \rowcolor{tablerow} Длительность & 5ч 15м \\
+  \hline
+  \rowcolor{tablerow} Количество пассажиров & 1 \\
+  \hline
+  \rowcolor{tablerow} Цена & \textbf{8417\,RUB} \\
+  \hline
+  \rowcolor{tablerow} Дата бронирования & 2025-05-03T13:32:07.596870 \\
+  \hline
+  \rowcolor{tablerow} Статус & \textcolor{green}{\textbf{confirmed}} \\
+  \hline
+\end{tabular}
+
+\vspace{1cm}
+\begin{center}
+  \small
+  Спасибо за выбор нашей авиакомпании! \\
+  Для получения дополнительной информации свяжитесь с нами: support@airline.com
+\end{center}
+
+\end{document}
